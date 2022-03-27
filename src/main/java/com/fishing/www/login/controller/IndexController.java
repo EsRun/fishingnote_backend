@@ -1,15 +1,24 @@
 package com.fishing.www.login.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fishing.www.login.dto.UserDto;
+import com.fishing.www.login.mapper.LoginMapper;
+import com.fishing.www.login.service.LoginService;
 
 @Controller
 public class IndexController {
 	
+	@Autowired
+	LoginService loginService;
+
 	@GetMapping({"", "/"})
 	public String index() {
 		return "index/index";
@@ -32,21 +41,14 @@ public class IndexController {
 	
 	@GetMapping("/loginForm")
 	public  String loginForm() {
+		//System.out.println("로그인 폼");
 		return "login/loginForm";
 	}
 	
-	@GetMapping("/joinForm")
-	public  String joinForm() {
-		return "member/joinForm";
+	@PostMapping("/login")
+	public String login(UserDto userDto) throws Exception {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("auth= "+auth.getAuthorities());
+		return "redirect:/login/loginForm";
 	}
-	
-	@PostMapping("/join")
-	public @ResponseBody String join(UserDto userDto) {
-		
-		userDto.setRole("ROLE_USER");
-		System.out.println(userDto);
-		return "join";
-	}
-	
-
 }
