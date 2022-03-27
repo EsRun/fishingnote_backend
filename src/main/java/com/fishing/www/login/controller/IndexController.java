@@ -50,7 +50,7 @@ public class IndexController {
 		return "redirect:/login/loginForm";
 	}
 	
-	@GetMapping("/error")
+	@GetMapping("/error404")
 	public String error() {
 		return "error/error";
 	}
