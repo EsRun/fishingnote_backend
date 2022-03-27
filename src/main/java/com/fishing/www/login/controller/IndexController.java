@@ -3,14 +3,12 @@ package com.fishing.www.login.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fishing.www.login.dto.UserDto;
-import com.fishing.www.login.mapper.LoginMapper;
 import com.fishing.www.login.service.LoginService;
 
 @Controller
@@ -50,5 +48,10 @@ public class IndexController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("auth= "+auth.getAuthorities());
 		return "redirect:/login/loginForm";
+	}
+	
+	@GetMapping("/error")
+	public String error() {
+		return "error/error";
 	}
 }
