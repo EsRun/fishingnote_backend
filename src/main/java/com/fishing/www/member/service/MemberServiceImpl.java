@@ -13,9 +13,13 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	@Autowired
+	BCryptPasswordEncoder passEncoder;
+	
 	// 회원 가입
 	public int insertUser(MemberDto memberDto) {
 		memberDto.setRole("ROLE_USER");
+		memberDto.setPassword(passEncoder.encode(memberDto.getPassword()));
 		return memberMapper.insertUser(memberDto);
 	}
 		

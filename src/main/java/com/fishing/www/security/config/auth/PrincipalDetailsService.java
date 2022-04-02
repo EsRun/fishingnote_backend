@@ -47,7 +47,6 @@ public class PrincipalDetailsService implements UserDetailsService{
 		};
 
 		if(user == null) {
-			System.out.println(user);
 			throw new UsernameNotFoundException("접속자 정보를 찾을 수 없습니다.");
 		}
 		return new PrincipalDetails(user);

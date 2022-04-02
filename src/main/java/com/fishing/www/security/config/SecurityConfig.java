@@ -13,13 +13,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fishing.www.security.config.auth.CustomAuthenticationProvider;
+import com.fishing.www.security.config.auth.CustomLoginSuccessHandler;
+import com.fishing.www.security.config.auth.CustomLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity // SecurityConfig Class가 스프링 필터체인에 등록
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	
+	@Autowired
+	CustomLoginSuccessHandler loginSuccessHander;
 	    
+	@Autowired
+	CustomLogoutSuccessHandler logoutSuccessHandler;
+	
 	@Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/static/resources/**");
@@ -35,20 +41,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
+			.antMatchers("/login/loginForm", "/member/joinForm", "/member/join").permitAll()
 			.antMatchers("/user/**").authenticated()
 			.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-			.anyRequest().permitAll()
+			.anyRequest().authenticated()
 			.and()
 			.formLogin()
-				.loginPage("/loginForm")
-				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/")
+				.loginPage("/login/loginForm")
+				.loginProcessingUrl("/login/login")
+				.successHandler(loginSuccessHander)
 				.and()
 			.logout()
-				.logoutSuccessUrl("/loginForm")
+				.logoutUrl("/login/logout")
+				.logoutSuccessHandler(logoutSuccessHandler)
 			.and()
-			.exceptionHandling().accessDeniedPage("/error404");
+			.exceptionHandling().accessDeniedPage("/404");
+		
+		http.sessionManagement()
+			.maximumSessions(1)
+			.maxSessionsPreventsLogin(true)
+			.expiredUrl("/login/loginForm");
 	}
 	
 	@Bean

@@ -1,5 +1,8 @@
 package com.fishing.www.login.controller;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,21 +40,24 @@ public class IndexController {
 		return "manager";
 	}
 	
-	@GetMapping("/loginForm")
+	@GetMapping("/login/loginForm")
 	public  String loginForm() {
 		//System.out.println("로그인 폼");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(auth);
 		return "login/loginForm";
 	}
-	
-	@PostMapping("/login")
+	/*
+	@PostMapping("/login/login")
 	public String login(UserDto userDto) throws Exception {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println("auth= "+auth.getAuthorities());
+		System.out.println("ㅇㅇ");
 		return "redirect:/login/loginForm";
 	}
-	
-	@GetMapping("/error404")
-	public String error() {
+	*/
+	@GetMapping("/404")
+	public String error(HttpServletRequest request) {
+		Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		System.out.println(status);
 		return "error/error";
 	}
 }

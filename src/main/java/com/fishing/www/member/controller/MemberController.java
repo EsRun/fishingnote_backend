@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fishing.www.member.dto.MemberDto;
@@ -13,6 +14,7 @@ import com.fishing.www.member.service.MemberService;
 
 
 @Controller
+@RequestMapping("/member")
 public class MemberController {
 	
 	@Autowired
@@ -25,8 +27,9 @@ public class MemberController {
 	
 	@PostMapping("/join")
 	public String join(MemberDto memberDto) throws Exception {
+		System.out.println("ㅇㅇ");
 		memberService.insertUser(memberDto);
-		return "redirect:/joinForm";
+		return "redirect:/member/joinForm";
 	}
 	
 }
