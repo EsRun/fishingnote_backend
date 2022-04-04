@@ -1,18 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>회원가입 페이지</title>
+<link href="/../static/css/joinForm.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script>
+
+	// 아이디 중복 확인
+	const idCheck = () =>{
+		let userid = document.getElementById("userid").value;
+		$.ajax({
+			url:"/member/idCheck",
+			type: "GET",
+			dataType: "JSON",
+			data:{
+				userid: userid
+			},
+			success: function(res){
+				res === 1 ? console.log("중복아이디 존재") : console.log("사용 가능한 아이디")
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+                alert("에러\n" + textStatus + " : " + errorThrown);
+            }
+		})
+	}
+	
+	const form_check = () =>{
+		let is_valid = false;
+		$("input").each(function(){
+			$(this).val().length <= 0 ? is_valid = true : 
+			console.log($(this).attr('name')+"= "+$(this).val().length);
+			
+		})
+		return false;
+	}
+</script>
 </head>
+
 <body>
+<div class="container">
 <h1>회원가입 페이지</h1>
 <hr/>
-<form action="/join" method="POST">
-	<input type="text" name="userid"  placeholder="아이디"><br />
+<form action="/member/join" method="POST" onSubmit="return form_check()">
+	<input type="text" name="userid" id="userid" placeholder="아이디"><button type="button" onClick="idCheck()">아이디 중복확인</button><br />
 	<input type="password" name="password"  placeholder="패스워드"><br />
 	<input type="text" name="username"  placeholder="Username"><br />
 	<input type="email" name="email"  placeholder="Email"><br />
 	<button>회원가입</button>
 </form>
+</div>
 </body>
 </html>

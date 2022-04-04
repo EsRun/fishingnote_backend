@@ -3,8 +3,12 @@
 
 <mapper namespace="com.fishing.www.member.mapper.MemberMapper">
 
-<insert id="insertUser"  parameterType="com.fishing.www.member.dto.MemberDto" >
+<insert id="insertUser" parameterType="com.fishing.www.member.dto.MemberDto" >
 	INSERT INTO member(userid, password, username, email, role) VALUES(#{userid}, #{password}, #{username}, #{email}, #{role})
 </insert>
+
+<select id="idCheck" parameterType="string" resultType="int">
+	select count(*) FROM member WHERE userid = #{userid}
+</select>
 
 </mapper>

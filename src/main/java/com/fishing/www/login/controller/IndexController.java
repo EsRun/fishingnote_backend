@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fishing.www.login.dto.UserDto;
@@ -37,13 +38,13 @@ public class IndexController {
 		return "manager";
 	}
 	
-	@GetMapping("/loginForm")
-	public  String loginForm() {
+	@GetMapping("/login/loginForm")
+	public String loginForm() {
 		//System.out.println("로그인 폼");
 		return "login/loginForm";
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/login/loginProc")
 	public String login(UserDto userDto) throws Exception {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		System.out.println("auth= "+auth.getAuthorities());
