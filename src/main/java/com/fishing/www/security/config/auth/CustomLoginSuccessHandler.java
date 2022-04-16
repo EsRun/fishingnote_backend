@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +44,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 			WebAuthenticationDetails web = (WebAuthenticationDetails) auth.getDetails();
 			System.out.println("IP : " + web.getRemoteAddress());
 			System.out.println("Session ID : " + web.getSessionId());
-			
 			// 인증 ID
 			System.out.println("name : " + auth.getName());
 			
@@ -53,7 +53,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler{
 			for(int i = 0; i< authList.size(); i++) {
 				System.out.print(authList.get(i).getAuthority() + " ");
 			}
-			System.out.println();
+			System.out.println("CustomLogin");
 		
 		response.sendRedirect("/");
 	}

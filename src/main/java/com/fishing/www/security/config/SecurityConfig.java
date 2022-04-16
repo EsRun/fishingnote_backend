@@ -1,6 +1,7 @@
 package com.fishing.www.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,9 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.fishing.www.security.config.auth.CustomAuthenticationProvider;
+import com.fishing.www.security.config.auth.CustomLoginFailedHandler;
 import com.fishing.www.security.config.auth.CustomLoginSuccessHandler;
 import com.fishing.www.security.config.auth.CustomLogoutSuccessHandler;
 
@@ -25,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	    
 	@Autowired
 	CustomLogoutSuccessHandler logoutSuccessHandler;
+	
+	@Autowired
+	CustomLoginFailedHandler customLoginFailedHandler;
 	
 	@Override
     public void configure(WebSecurity web) throws Exception {
@@ -51,17 +59,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.loginPage("/login/loginForm")
 				.loginProcessingUrl("/login/login")
 				.successHandler(loginSuccessHander)
+				.failureHandler(customLoginFailedHandler)
 				.and()
 			.logout()
-				.logoutUrl("/login/logout")
+				.logoutUrl("/logout")
+				.deleteCookies("JSESSIONID")
+				.invalidateHttpSession(true)
 				.logoutSuccessHandler(logoutSuccessHandler)
 			.and()
 			.exceptionHandling().accessDeniedPage("/404");
 		
 		http.sessionManagement()
 			.maximumSessions(1)
-			.maxSessionsPreventsLogin(true)
-			.expiredUrl("/login/loginForm");
+			.maxSessionsPreventsLogin(false)
+			.expiredUrl("/expired")
+			.sessionRegistry(sessionRegistry());
 	}
 	
 	@Bean
@@ -73,4 +85,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider();
     }
+	
+	@Bean
+	public SessionRegistry sessionRegistry() {
+	  return new SessionRegistryImpl();
+	}// Register HttpSessionEventPublisher
+
+	@Bean
+	public static ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
+	  return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
+	}
 }

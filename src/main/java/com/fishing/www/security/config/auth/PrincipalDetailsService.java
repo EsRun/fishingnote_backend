@@ -42,14 +42,14 @@ public class PrincipalDetailsService implements UserDetailsService{
 			user = loginService.getUser(username);
 			
 		} catch (Exception e) {
-			System.out.println(e);
+			System.out.println("PrincipalDetail= "+e);
 			e.printStackTrace();
 		};
 
 		if(user == null) {
 			throw new UsernameNotFoundException("접속자 정보를 찾을 수 없습니다.");
 		}
-		return new PrincipalDetails(user);
+		return user;
 		
 	
 	}
