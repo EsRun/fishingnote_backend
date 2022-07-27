@@ -9,6 +9,21 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDto implements UserDetails{
+	/*
+	□ Serializable(직렬화)
+		- 프로그램에서 사용되는 데이터들은 연속적으로 위치해 있지 않고 내부적으로
+		포인터에 의해 참조 되고 있는데, 이는 프로그램이 실행중인 컴퓨터에서만 인식할 수 있는 형태이다.
+		다른 컴퓨터와 통신하며 데이터를 알맞게 전달하기 위해서는 이렇게 흩뿌려져 있는 데이터를 한 데 모아 
+		포인터가 존재하지 않는 일련의 바이트 형태로 만들어서 보내야 하는데 이를 보고 직렬화 라고 한다.
+	
+	 Serializable을 상속하는 클래스 사용 시 serialVersionUID 변수를 선언 및 값 선언을 해야한다.
+	 해당 변수를 사용하지 않을 경우 자동으로 생성되지만 이는 역직렬화 시에 오류를 유발할 수 있다.
+	 
+	 --- Serializable(직렬화) ---                                     --- DeSerializable(역직렬화) --- 
+	 object -> byte array -> [ file, memory, database ] -> byte array -> object
+	 */
+	
+	private static final long serialVersionUID = 1L;
 	private int idx;
 	private String userid;
 	private String password;
