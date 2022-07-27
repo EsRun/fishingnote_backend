@@ -64,28 +64,30 @@ public class UserDto implements UserDetails{
 		return "UserDto [idx=" + idx + ", userid=" + userid + ", password=" + password + ", username=" + username
 				+ ", email=" + email + ", role=" + role + ", regDate=" + regDate + "]";
 	}
+	// 계정 권한 목록 리턴
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
         auth.add(new SimpleGrantedAuthority(role));
         return auth;
 	}
+	// 사용자 계정의 만료 유무(기본값 true, 만료 안됨)
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
-
+	// 사용자 계정의 잠김 유무 리턴(기본값 true, 잠기지 않음)
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-
+	// 사용자 계정의 비밀번호 만료 유무(기본값 true, 만료 안됨)
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
-	// 계정 활성화 유무
+	// 계정 활성화 유무(기본값 true, 활성화 됨)
 	@Override
 	public boolean isEnabled() {
 		// 1년동안 로그인을 안하면 휴면계정으로 변경하기로 약속해놨을 경우
