@@ -8,4 +8,10 @@
 	WHERE userid = #{username}
 </select>
 
+<select id="getUser2"  parameterType="map"  resultType="com.fishing.www.login.dto.UserDto">
+	SELECT * FROM member
+	WHERE userid = #{dto.userid}
+	and delCheck = #{delCheck}
+</select>
+
 </mapper>

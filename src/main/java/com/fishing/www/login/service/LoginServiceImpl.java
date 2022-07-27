@@ -16,4 +16,9 @@ public class LoginServiceImpl implements LoginService{
 		return loginMapper.getUser(username);
 	}
 	
+	@Override
+	public UserDto getUser2(UserDto dto, String delCheck) {
+		return loginMapper.getUser2(dto, delCheck);
+	}
+	
 }

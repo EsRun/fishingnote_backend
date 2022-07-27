@@ -1,6 +1,7 @@
 package com.fishing.www.login.controller;
 
 import java.util.List;
+import java.util.Scanner;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +24,13 @@ public class IndexController {
 	
 	@Autowired
 	LoginService loginService;
-
+	
 	@Autowired
     private SessionRegistry sessionRegistry;
 	
 	@GetMapping({"", "/"})
-	public String index() {
+	public String index(UserDto dto) {
+		
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -40,6 +42,12 @@ public class IndexController {
             System.out.println("세션만료여부:" + session.isExpired());
             System.out.println("=======================================================");
         }
+         
+        dto.setUserid("pen4");
+        String delCheck = "1";
+        //System.out.println(dto.getUserid());
+        System.out.println("ㅇㅇ= "+loginService.getUser2(dto, delCheck));
+        
         
 		return "index/index";
 	}
@@ -67,6 +75,7 @@ public class IndexController {
 //		if(!auth.getAuthorities().equals("ROLE_ANONYMOUS")) {
 //			return "redirect:/";
 //		}
+		
 		return "login/loginForm";
 	}
 	/*
@@ -88,3 +97,4 @@ public class IndexController {
 		return "세션 만료";
 	}
 }
+
